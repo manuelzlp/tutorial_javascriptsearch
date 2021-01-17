@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>Search!</title>
+	</head>
+	<body>
+	
+		<h1>Welcome</h1>
+		<br /><br />
+		<h3>Write something!</h3>
+		<input type="text" id="query" />
+		
+		<br /><br />
+		
+		<h3>Where to search:</h3>
+		
+		<input type="radio" id="search_title" name="what_to_search" checked/> Title
+		<input type="radio" id="search_author" name="what_to_search" /> Author
+		
+		<br /><br />
+		<input type="button" id="search_button" value="Search!" />
+		
+		<br /><br />
+		
+		<div id="results_container"></div>
+		
+		<script src="books.js"></script>
+		<script>
+		
+			const button = document.getElementById('search_button');
+			const queryInput = document.getElementById('query');
+			const searchTitle = document.getElementById('search_title');
+			const searchAuthor = document.getElementById('search_author');
+			const resultsContainer = document.getElementById('results_container');
+			
+			button.addEventListener('click', () => {
+				
+				let query = queryInput.value;
+				
+				if (query=='') {
+					alert('Error: the query is empty');
+					return;
+				}
+				
+				let results = [];
+				
+				if (searchTitle.checked) {
+					// Search by title
+					books.forEach(el => {
+						if (el.title.toLowerCase().includes(query.toLowerCase()))
+							results.push(el);
+					});
+				} else {
+					// Search by author
+					books.forEach(el => {
+						if (el.author.toLowerCase().includes(query.toLowerCase()))
+							results.push(el);
+					});
+				}
+				
+				
+				// Results
+				
+				resultsContainer.innerHTML = '';
+				
+				let resultHTML = '';
+				
+				results.forEach(el => {
+					resultHTML += `
+						<b>${el.title}</b> (${el.year}) | By <b>${el.author}</b>
+						<hr />
+					`;
+				});
+				
+				if (resultHTML=='')
+					resultsContainer.innerHTML = '<h1>No results found!</h1>';
+				else
+					resultsContainer.innerHTML = '<h1>Results:</h1>' + resultHTML;
+				
+			});
+		
+		</script>
+	</body>
+</html>
